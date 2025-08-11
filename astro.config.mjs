@@ -14,7 +14,6 @@ export default defineConfig({
     platformProxy: {
       enabled: true
     },
-
     imageService: "cloudflare"
   }),
   prefetch: {
@@ -22,12 +21,32 @@ export default defineConfig({
     defaultStrategy: 'hover',
   },
 
+  // Optimizaciones para reducir latencia crítica
+  build: {
+    inlineStylesheets: 'auto', // Inline CSS crítico
+  },
 
   vite: {
+    build: {
+      // Optimizar chunks para reducir latencia
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Separar vendor chunks
+            vendor: ['astro'],
+          },
+        },
+      },
+      // Optimizar CSS
+      cssCodeSplit: true,
+      // Reducir tamaño de chunks
+      chunkSizeWarningLimit: 1000,
+    },
+    
+    // Tailwind CSS
     plugins: [
-      // Tailwind CSS
       tailwindcss(),
-      // Compresión Brotli
+      // Compresión Brotli optimizada
       viteCompression({
         threshold: 10240,
         filter: /\.(js|mjs|json|css|html|svg|jsx|tsx|astro|txt|xml)$/,
@@ -46,5 +65,12 @@ export default defineConfig({
         compressionOptions: { level: 9 },
       }),
     ],
+    
+    // Optimizaciones de servidor de desarrollo
+    server: {
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    },
   }
 });

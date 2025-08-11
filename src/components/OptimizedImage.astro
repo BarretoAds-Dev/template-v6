@@ -307,6 +307,9 @@ if (useArtDirection) {
 
   // Optimización adicional para LCP
   const isLCPElement = isCritical && (src?.includes('astro.svg') || src?.includes('logo') || src?.includes('hero'));
+  
+  // Optimización para reducir latencia crítica
+  const isCriticalSVG = isLCPElement && src?.endsWith('.svg');
 
 // Validar en desarrollo
 if (import.meta.env.MODE === 'development') {

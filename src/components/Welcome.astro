@@ -8,7 +8,7 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
 -->
 <div class="relative min-h-screen font-sans">
   <!-- 
-    Imagen de fondo optimizada para LCP.
+    Imagen de fondo optimizada para LCP - Carga diferida para reducir latencia crítica.
     - Convertimos el CSS de #background a utilidades de Tailwind.
     - position: fixed -> fixed
     - top:0, left:0 -> top-0 left-0
@@ -25,6 +25,7 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
     fetchPriority="low"
     responsive={false}
     loading="lazy"
+    preload={false}
   />
 
   <!-- Contenedor principal del contenido centrado -->
@@ -41,6 +42,7 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
         - fetchPriority="high" para máxima prioridad
         - loading="eager" para carga inmediata
         - responsive={false} para evitar srcset innecesario
+        
       -->
       <a href="https://astro.build" class="block">
         <OptimizedImage
@@ -138,8 +140,14 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
   - Reducción del Element Render Delay
 -->
 <script>
-  // Optimización inmediata para LCP
-  document.addEventListener('DOMContentLoaded', function() {
+  // Optimización inmediata para LCP - Reducir latencia crítica
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeLCP);
+  } else {
+    optimizeLCP();
+  }
+
+  function optimizeLCP() {
     // Marcar el logo como visible inmediatamente
     const logo = document.querySelector('img[alt="astro logo"]') as HTMLElement;
     if (logo) {
@@ -154,9 +162,9 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
       element.style.willChange = 'auto';
       element.style.transform = 'translateZ(0)';
     });
-  });
+  }
 
-  // Intersection Observer para elementos no críticos
+  // Intersection Observer para elementos no críticos - Carga diferida
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -167,8 +175,8 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
         }
       });
     }, {
-      rootMargin: '50px 0px',
-      threshold: 0.1
+      rootMargin: '100px 0px', // Aumentar margen para carga más temprana
+      threshold: 0.01 // Reducir threshold para detección más temprana
     });
 
     // Observar elementos no críticos
