@@ -5,5 +5,19 @@
       "hero.svg"
     ],
     "timestamp": 1754926057899
+  },
+  "background.svg": {
+    "hash": "c2eaad48507ad1ea41f586bd5c21858a",
+    "outputFiles": [
+      "background.svg"
+    ],
+    "timestamp": 1754928761660
+  },
+  "astro.svg": {
+    "hash": "d26c3520f1f016bad745392df8b5fae5",
+    "outputFiles": [
+      "astro.svg"
+    ],
+    "timestamp": 1754928761666
   }
 }

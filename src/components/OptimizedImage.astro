@@ -1,0 +1,462 @@
+---
+import fs from 'fs/promises';
+import path from 'path';
+
+// ============================================================================
+// 🎨 OPTIMIZED IMAGE COMPONENT v3.0 - TODO EN UNO ULTRA OPTIMIZADO
+// ============================================================================
+// CARACTERÍSTICAS:
+// 1. Art Direction completo con breakpoints personalizables
+// 2. Detección automática de imágenes críticas
+// 3. Validación y debug en desarrollo
+// 4. Lazy loading optimizado con Intersection Observer
+// 5. Preload inteligente para imágenes críticas
+// 6. Responsive srcset automático
+// 7. Soporte para múltiples formatos (AVIF, WebP, fallback)
+// 8. Configuración centralizada y extensible
+// ============================================================================
+
+// ============================================================================
+// 🏗️ CONFIGURACIÓN CENTRALIZADA
+// ============================================================================
+
+const IMAGE_CONFIG = {
+  // Formatos soportados
+  formats: ['avif', 'webp'] as const,
+  
+  // Breakpoints por defecto
+  breakpoints: {
+    mobile: '(max-width: 768px)',
+    tablet: '(min-width: 769px) and (max-width: 1024px)',
+    desktop: '(min-width: 1025px)',
+  },
+  
+  // Palabras clave para imágenes críticas
+  criticalKeywords: ['hero', 'banner', 'logo', 'main', 'og-', 'portada', 'cover'],
+  
+  // Directorio de imágenes optimizadas
+  optimizedDir: '/assets/img-op/',
+  
+  // Sizes por defecto
+  defaultSizes: {
+    mobile: '100vw',
+    tablet: '(max-width: 768px) 100vw, 80vw',
+    desktop: '(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 60vw',
+  },
+  
+  // Srcset responsive
+  responsiveSizes: [480, 800, 1200, 1920],
+} as const;
+
+// ============================================================================
+// 🏗️ TIPOS E INTERFACES
+// ============================================================================
+
+interface ArtDirectionSource {
+  src: string;
+  media?: string;
+  sizes?: string;
+  type?: 'avif' | 'webp' | 'jpeg' | 'png';
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  // Props básicas
+  src?: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  className?: string;
+  loading?: 'lazy' | 'eager';
+  fetchPriority?: 'high' | 'low' | 'auto';
+  preload?: boolean;
+  sizes?: string;
+  adaptive?: boolean;
+  ariaLabel?: string;
+  responsive?: boolean;
+  
+  // Art Direction
+  sources?: ArtDirectionSource[];
+  fallback?: {
+    src: string;
+    width: number;
+    height: number;
+    type?: 'avif' | 'webp' | 'jpeg' | 'png';
+  };
+  
+  // Breakpoints personalizados
+  breakpoints?: {
+    mobile?: string;
+    tablet?: string;
+    desktop?: string;
+  };
+}
+
+// ============================================================================
+// 🛠️ FUNCIONES DE UTILIDAD (INTERNAS)
+// ============================================================================
+
+function normalizeImagePath(src: string): string {
+  // Si ya está en el directorio optimizado, devolver tal como está
+  if (src.startsWith(IMAGE_CONFIG.optimizedDir)) return src;
+  
+  // Si está en assets/images, convertir a img-op
+  if (src.startsWith('/assets/images/')) {
+    return src.replace('/assets/images/', IMAGE_CONFIG.optimizedDir);
+  }
+  
+  // Si es una ruta absoluta que no es de assets, devolver tal como está
+  if (src.startsWith('/')) return src;
+  
+  // Si es una ruta relativa, agregar el directorio optimizado
+  return `${IMAGE_CONFIG.optimizedDir}${src}`;
+}
+
+function getImageFormats(basePath: string) {
+  const normalizedPath = normalizeImagePath(basePath);
+  const base = normalizedPath.replace(/\.[\w]+$/, '');
+  const ext = basePath.split('.').pop()?.toLowerCase() || 'webp';
+
+  // Si es SVG, no generar formatos adicionales
+  if (ext === 'svg') {
+    return {
+      avif: normalizedPath, // SVG como AVIF (no se convierte)
+      webp: normalizedPath, // SVG como WebP (no se convierte)
+      fallback: normalizedPath, // SVG original
+    };
+  }
+
+  return {
+    avif: `${base}.avif`,
+    webp: `${base}.webp`,
+    fallback: `${base}.${ext}`,
+  };
+}
+
+function generateSrcset(basePath: string, responsive: boolean) {
+  const formats = getImageFormats(basePath);
+  
+  if (!responsive) return formats;
+  
+  const base = basePath.replace(/\.[\w]+$/, '');
+  const avifSrcset = IMAGE_CONFIG.responsiveSizes
+    .map(size => `${base}-${size}.avif ${size}w`)
+    .join(', ');
+  const webpSrcset = IMAGE_CONFIG.responsiveSizes
+    .map(size => `${base}-${size}.webp ${size}w`)
+    .join(', ');
+    
+  return {
+    avif: avifSrcset,
+    webp: webpSrcset,
+    fallback: formats.fallback,
+  };
+}
+
+function isCriticalImage(src: string | undefined, sources?: ArtDirectionSource[]): boolean {
+  const checkSrc = (s: string) => 
+    IMAGE_CONFIG.criticalKeywords.some(kw => s.toLowerCase().includes(kw));
+    
+  if (sources) {
+    return sources.some(s => checkSrc(s.src)) || 
+           (src ? checkSrc(src) : false);
+  }
+  return src ? checkSrc(src) : false;
+}
+
+function generateOptimizedSizes(source: ArtDirectionSource, breakpoints: any): string {
+  if (source.sizes) return source.sizes;
+  
+  if (source.media?.includes('max-width: 768px')) {
+    return IMAGE_CONFIG.defaultSizes.mobile;
+  } else if (source.media?.includes('max-width: 1024px')) {
+    return IMAGE_CONFIG.defaultSizes.tablet;
+  } else {
+    return IMAGE_CONFIG.defaultSizes.desktop;
+  }
+}
+
+// ============================================================================
+// 🔍 VALIDACIÓN Y DEBUG (SOLO EN DESARROLLO)
+// ============================================================================
+
+async function validateImageFiles(processedData: any, useArtDirection: boolean) {
+  if (import.meta.env.MODE !== 'development') return;
+  
+  const publicRoot = path.resolve('public');
+  
+  try {
+    if (useArtDirection) {
+      // Validar sources
+      for (const source of processedData.sources) {
+        await fs.access(path.join(publicRoot, source.formats.avif));
+        await fs.access(path.join(publicRoot, source.formats.webp));
+      }
+      // Validar fallback
+      if (processedData.fallback) {
+        await fs.access(path.join(publicRoot, processedData.fallbackFormats.avif));
+      }
+    } else {
+      // Validación legacy
+      await fs.access(path.join(publicRoot, processedData.legacyAvif));
+      await fs.access(path.join(publicRoot, processedData.legacyWebp));
+    }
+  } catch (error) {
+    console.warn('⚠️ OptimizedImage: Algunas imágenes optimizadas no encontradas');
+  }
+}
+
+// ============================================================================
+// 🎯 LÓGICA PRINCIPAL DEL COMPONENTE
+// ============================================================================
+
+const {
+  // Props básicas
+  src,
+  alt,
+  width,
+  height,
+  className = '',
+  loading = 'lazy',
+  fetchPriority = 'auto',
+  preload,
+  sizes = '100vw',
+  adaptive = true,
+  ariaLabel,
+  responsive = false,
+  
+  // Art Direction
+  sources,
+  fallback,
+  breakpoints = IMAGE_CONFIG.breakpoints,
+} = Astro.props as Props;
+
+// Detectar modo de funcionamiento
+const useArtDirection = Boolean(sources && sources.length > 0);
+const useLegacyMode = !useArtDirection;
+
+// Procesar datos según el modo
+let processedData: any = {};
+
+if (useArtDirection) {
+  // Procesar art direction
+  processedData = {
+    sources: sources!.map(source => ({
+      ...source,
+      formats: getImageFormats(source.src),
+      srcset: generateSrcset(source.src, responsive),
+      normalizedSrc: normalizeImagePath(source.src),
+    })),
+    fallbackFormats: fallback ? getImageFormats(fallback.src) : null,
+    fallbackSrcset: fallback ? generateSrcset(fallback.src, responsive) : null,
+  };
+} else {
+  // Procesar modo legacy
+  if (!src || !width || !height) {
+    throw new Error('OptimizedImage: src, width y height son requeridos en modo legacy');
+  }
+  
+  const isMobile = (Astro.locals as any)?.isMobile ?? false;
+  const normalizedSrc = src.startsWith(IMAGE_CONFIG.optimizedDir) 
+    ? src.replace(IMAGE_CONFIG.optimizedDir, '')
+    : src.startsWith('/assets/images/')
+    ? src.replace('/assets/images/', '')
+    : src.startsWith('/')
+    ? src.substring(1)
+    : src;
+    
+  const basePath = normalizedSrc.replace(/\.[\w]+$/, '');
+  const ext = src.split('.').pop()?.toLowerCase() || 'png';
+  const finalBasePath = adaptive && isMobile && !basePath.includes('-mobile')
+    ? basePath + '-mobile'
+    : basePath;
+    
+  // Si es SVG, usar la ruta tal como está
+  if (ext === 'svg') {
+    processedData = {
+      legacyFallback: src, // Usar la ruta original
+      legacyAvif: src,     // SVG como AVIF
+      legacyWebp: src,     // SVG como WebP
+      legacyAvifSrcset: src,
+      legacyWebpSrcset: src,
+      imgSizes: sizes,
+    };
+  } else {
+    processedData = {
+      legacyFallback: `${IMAGE_CONFIG.optimizedDir}${finalBasePath}.${ext}`,
+      legacyAvif: `${IMAGE_CONFIG.optimizedDir}${finalBasePath}.avif`,
+      legacyWebp: `${IMAGE_CONFIG.optimizedDir}${finalBasePath}.webp`,
+      legacyAvifSrcset: responsive 
+        ? IMAGE_CONFIG.responsiveSizes.map(size => `${IMAGE_CONFIG.optimizedDir}${basePath}-${size}.avif ${size}w`).join(', ')
+        : `${IMAGE_CONFIG.optimizedDir}${finalBasePath}.avif`,
+      legacyWebpSrcset: responsive
+        ? IMAGE_CONFIG.responsiveSizes.map(size => `${IMAGE_CONFIG.optimizedDir}${basePath}-${size}.webp ${size}w`).join(', ')
+        : `${IMAGE_CONFIG.optimizedDir}${finalBasePath}.webp`,
+      imgSizes: responsive ? IMAGE_CONFIG.defaultSizes.tablet : sizes,
+    };
+  }
+}
+
+// Detectar imagen crítica
+const isCritical = isCriticalImage(src || '', sources);
+const shouldPreload = preload ?? isCritical;
+const preloadID = useArtDirection 
+  ? processedData.fallbackFormats?.avif?.replace(/\W+/g, '_') || 'art-direction'
+  : processedData.legacyAvif.replace(/\W+/g, '_');
+
+// Validar en desarrollo
+if (import.meta.env.MODE === 'development') {
+  await validateImageFiles(processedData, useArtDirection);
+  
+  if (!alt) {
+    console.warn(`⚠️ OptimizedImage: alt vacío para ${useArtDirection ? fallback?.src : src}`);
+  }
+}
+---
+
+<!-- ============================================================================
+     🎨 RENDERIZADO DEL COMPONENTE
+     ============================================================================ -->
+
+{shouldPreload && (
+  <link
+    id={`preload_${preloadID}`}
+    rel="preload"
+    as="image"
+    href={useArtDirection ? processedData.fallbackFormats.avif : processedData.legacyAvif}
+    type="image/avif"
+    fetchpriority={fetchPriority}
+  />
+)}
+
+<picture
+  {...(ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : {})}
+  class={`optimized-image ${className}`}
+>
+  {useArtDirection ? (
+    <>
+      {/* Sources para art direction */}
+      {processedData.sources.map((source: any) => (
+        <>
+          <source
+            media={source.media}
+            srcset={source.srcset.avif}
+            type="image/avif"
+            sizes={generateOptimizedSizes(source, breakpoints)}
+          />
+          <source
+            media={source.media}
+            srcset={source.srcset.webp}
+            type="image/webp"
+            sizes={generateOptimizedSizes(source, breakpoints)}
+          />
+        </>
+      ))}
+      
+      {/* Fallback para art direction */}
+      <img
+        src={processedData.fallbackFormats.fallback}
+        alt={alt}
+        width={fallback!.width}
+        height={fallback!.height}
+        class={`optimized-img ${className}`}
+        loading={loading}
+        fetchpriority={fetchPriority}
+        decoding="async"
+        sizes={sizes}
+        {...(alt === '' ? { 'aria-hidden': 'true' } : {})}
+      />
+    </>
+  ) : (
+    <>
+      {/* Modo legacy */}
+      <source srcset={processedData.legacyAvifSrcset} type="image/avif" sizes={processedData.imgSizes} />
+      <source srcset={processedData.legacyWebpSrcset} type="image/webp" sizes={processedData.imgSizes} />
+      <img
+        src={processedData.legacyFallback}
+        alt={alt}
+        width={width}
+        height={height}
+        class={`optimized-img ${className}`}
+        loading={loading}
+        fetchpriority={fetchPriority}
+        decoding="async"
+        sizes={processedData.imgSizes}
+        {...(alt === '' ? { 'aria-hidden': 'true' } : {})}
+      />
+    </>
+  )}
+</picture>
+
+<!-- ============================================================================
+     🎨 ESTILOS OPTIMIZADOS
+     ============================================================================ -->
+
+<style>
+  .optimized-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .optimized-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Optimizaciones responsive */
+  @media (max-width: 768px) {
+    .optimized-img {
+      object-position: center;
+    }
+  }
+</style>
+
+<!-- ============================================================================
+     🧠 SCRIPT DE OPTIMIZACIÓN
+     ============================================================================ -->
+
+<script>
+  function optimizeImages() {
+    const pictures = document.querySelectorAll('.optimized-image');
+
+    pictures.forEach((picture) => {
+      const img = picture.querySelector('img');
+      if (!img) return;
+
+      // Intersection Observer para lazy loading optimizado
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const img = entry.target as HTMLImageElement;
+              img.style.opacity = '1';
+              observer.unobserve(img);
+            }
+          });
+        },
+        {
+          rootMargin: '50px 0px',
+          threshold: 0.1,
+        }
+      );
+
+      if (img) {
+        observer.observe(img);
+      }
+    });
+  }
+
+  // Ejecutar en carga inicial y después de navegación de Astro
+  document.addEventListener('astro:page-load', optimizeImages);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeImages);
+  } else {
+    optimizeImages();
+  }
+</script> 
