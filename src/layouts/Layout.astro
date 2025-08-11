@@ -1,5 +1,7 @@
 ---
 import '@/styles/global.css';
+import { fade } from 'astro:transitions';
+
 import MetaHead from '@/layouts/MetaHead.astro';
 import type { 
   AdvancedPropertyData,
@@ -95,7 +97,7 @@ const props = Astro.props;
     <MetaHead {...props} />
 
 <body>
-  <main transition:animate="slide">
+  <main transition:animate="fade">
     <slot />
   </main>
 </body>
