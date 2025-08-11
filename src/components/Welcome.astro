@@ -8,7 +8,8 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
 -->
 <div class="relative min-h-screen font-sans">
   <!-- 
-    Imagen de fondo. Convertimos el CSS de #background a utilidades de Tailwind.
+    Imagen de fondo optimizada para LCP.
+    - Convertimos el CSS de #background a utilidades de Tailwind.
     - position: fixed -> fixed
     - top:0, left:0 -> top-0 left-0
     - width:100%, height:100% -> w-full h-full
@@ -21,20 +22,27 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
     width={1000}
     height={1000}
     className="fixed top-0 left-0 w-full h-full -z-10 blur-[100px]"
-    fetchPriority="high"
-    responsive={true}
-    loading="eager"
+    fetchPriority="low"
+    responsive={false}
+    loading="lazy"
   />
 
   <!-- Contenedor principal del contenido centrado -->
   <main class="h-full flex justify-center items-center">
     <!-- 
-      Sección del "héroe".
+      Sección del "héroe" optimizada para LCP.
       Mobile-first: por defecto es un bloque con padding.
       Desktop (md:): se convierte en flexbox para alinear el contenido.
     -->
     <section class="p-4 pt-[10%] md:pt-4">
-      <a href="https://astro.build">
+      <!-- 
+        Logo optimizado para LCP - Elemento crítico
+        - Preload crítico habilitado
+        - fetchPriority="high" para máxima prioridad
+        - loading="eager" para carga inmediata
+        - responsive={false} para evitar srcset innecesario
+      -->
+      <a href="https://astro.build" class="block">
         <OptimizedImage
           src="/assets/img-op/astro.svg"
           alt="astro logo"
@@ -44,15 +52,16 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
           loading="eager"
           fetchPriority="high"
           preload={true}
-          responsive={true}
+          responsive={false}
         />
       </a>
 
       <!-- 
-        Tipografía con utilidades de Tailwind.
+        Tipografía optimizada para renderizado rápido.
         - font-size -> text-[22px]
         - margin-top -> mt-1
         - line-height en mobile -> leading-relaxed (1.625)
+        - Contenido crítico cargado inmediatamente
       -->
       <h1 class="text-[22px] mt-1 text-gray-800 leading-relaxed md:leading-normal">
         To get started, open the 
@@ -67,7 +76,7 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
       </h1>
       
       <!--
-        Contenedor de enlaces.
+        Contenedor de enlaces optimizado.
         Mobile: los enlaces se envuelven (flex-wrap).
         Desktop (md:): no se envuelven.
       -->
@@ -79,7 +88,7 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
         >
           Read our docs
         </a>
-        <!-- Enlace normal con SVG -->
+        <!-- Enlace normal con SVG inline para evitar request adicional -->
         <a
           class="flex items-center px-3 py-2.5 text-gray-900 no-underline transition-colors hover:text-gray-600"
           href="https://astro.build/chat"
@@ -97,11 +106,12 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
   </main>
 
   <!-- 
-    Caja de noticias.
+    Caja de noticias optimizada para carga diferida.
     Posicionamiento y tamaño responsivo con Tailwind.
     - Mobile: Ocupa todo el ancho en la parte inferior.
     - Desktop (md:): Se posiciona en la esquina inferior derecha.
     - La media query de altura se replica con una variante arbitraria.
+    - Carga diferida para no afectar LCP
   -->
   <a 
     href="https://astro.build/blog/astro-5/" 
@@ -122,8 +132,47 @@ import OptimizedImage from '@/components/OptimizedImage.astro';
 </div>
 
 <!-- 
-  El bloque <style> ya no es necesario, pero lo dejo aquí para
-  mostrar cómo se estilizan clases específicas en Tailwind si fuera necesario.
-  En este caso, todo se ha movido a utilidades, por lo que este bloque
-  podría eliminarse por completo.
+  Script de optimización para mejorar el renderizado
+  - Intersection Observer para lazy loading
+  - Optimización de imágenes críticas
+  - Reducción del Element Render Delay
 -->
+<script>
+  // Optimización inmediata para LCP
+  document.addEventListener('DOMContentLoaded', function() {
+    // Marcar el logo como visible inmediatamente
+    const logo = document.querySelector('img[alt="astro logo"]') as HTMLElement;
+    if (logo) {
+      logo.style.opacity = '1';
+      logo.style.transform = 'translateZ(0)'; // Forzar composición de capas
+    }
+    
+    // Optimizar renderizado de elementos críticos
+    const criticalElements = document.querySelectorAll('h1, .button');
+    criticalElements.forEach(el => {
+      const element = el as HTMLElement;
+      element.style.willChange = 'auto';
+      element.style.transform = 'translateZ(0)';
+    });
+  });
+
+  // Intersection Observer para elementos no críticos
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          element.style.opacity = '1';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+
+    // Observar elementos no críticos
+    const nonCriticalElements = document.querySelectorAll('.box, .blur-[100px]');
+    nonCriticalElements.forEach(el => observer.observe(el));
+  }
+</script>

@@ -298,12 +298,15 @@ if (useArtDirection) {
   }
 }
 
-// Detectar imagen crítica
-const isCritical = isCriticalImage(src || '', sources);
-const shouldPreload = preload ?? isCritical;
-const preloadID = useArtDirection 
-  ? processedData.fallbackFormats?.avif?.replace(/\W+/g, '_') || 'art-direction'
-  : processedData.legacyAvif.replace(/\W+/g, '_');
+  // Detectar imagen crítica
+  const isCritical = isCriticalImage(src || '', sources);
+  const shouldPreload = preload ?? isCritical;
+  const preloadID = useArtDirection 
+    ? processedData.fallbackFormats?.avif?.replace(/\W+/g, '_') || 'art-direction'
+    : processedData.legacyAvif.replace(/\W+/g, '_');
+
+  // Optimización adicional para LCP
+  const isLCPElement = isCritical && (src?.includes('astro.svg') || src?.includes('logo') || src?.includes('hero'));
 
 // Validar en desarrollo
 if (import.meta.env.MODE === 'development') {
@@ -326,7 +329,7 @@ if (import.meta.env.MODE === 'development') {
     as="image"
     href={useArtDirection ? processedData.fallbackFormats.avif : processedData.legacyAvif}
     type="image/avif"
-    fetchpriority={fetchPriority}
+    fetchpriority={isLCPElement ? "high" : fetchPriority}
   />
 )}
 

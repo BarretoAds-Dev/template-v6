@@ -1,0 +1,51 @@
+# ============================================================================
+# 🤖 ROBOTS.TXT - TEMPLATE V6 BY BARRETO DEV
+# ============================================================================
+# Este archivo controla cómo los rastreadores de motores de búsqueda
+# pueden acceder y rastrear tu sitio web.
+# ============================================================================
+
+# Permitir rastreo de todo el sitio
+User-agent: *
+Allow: /
+
+# Permitir rastreo de imágenes
+User-agent: Googlebot-Image
+Allow: /assets/
+Allow: /public/assets/
+
+# Permitir rastreo de CSS y JS
+User-agent: Googlebot
+Allow: /_astro/
+Allow: /assets/
+
+# Bloquear archivos de configuración y desarrollo
+Disallow: /scripts-optimizations/
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /.astro/
+Disallow: /.vite/
+Disallow: /dist/
+Disallow: /package.json
+Disallow: /pnpm-lock.yaml
+Disallow: /tsconfig.json
+Disallow: /wrangler.jsonc
+Disallow: /worker-configuration.d.ts
+
+# Bloquear archivos temporales y de caché
+Disallow: /.*\.tmp/
+Disallow: /.*\.cache/
+Disallow: /.*\.log/
+
+# Sitemap
+Sitemap: https://yourbusiness.com/sitemap.xml
+
+# Crawl-delay para ser respetuoso con el servidor
+Crawl-delay: 1
+
+# ============================================================================
+# 📝 NOTAS:
+# - Este robots.txt permite el rastreo completo del sitio
+# - Bloquea archivos de desarrollo y configuración
+# - Optimizado para SEO y rendimiento
+# ============================================================================ 
