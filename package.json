@@ -1,0 +1,32 @@
+{
+	"name": "template-v6",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev --host",
+		"clean": "rm -rf .astro/cache .vite dist && pnpm store prune",
+		"build": "pnpm run clean && astro check && astro build --prerender",
+		"preview": "astro build && wrangler pages dev",
+		"astro": "astro",
+		"deploy": "pnpm run optimize:full && wrangler deploy && pnpm run github",
+		"cf-typegen": "wrangler types",
+		"github": "git add . && git commit -m \"Deploy: $(date +'%Y-%m-%d %H:%M:%S')\" && git push origin HEAD",
+		"optimize:preloads": "node scripts-optimizations/PrecargaInteligente.js",
+		"optimize:images": "node scripts-optimizations/Transformacion-SmartImages.js",
+		"optimize:full": "pnpm run optimize:images && pnpm run build && pnpm run optimize:preloads"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^12.6.3",
+		"@tailwindcss/vite": "^4.1.11",
+		"astro": "^5.12.9",
+		"blurhash": "^2.0.5",
+		"glob": "^11.0.3",
+		"sharp": "^0.34.3",
+		"tailwindcss": "^4.1.11",
+		"vite-plugin-compression": "^0.5.1"
+	},
+	"devDependencies": {
+		"@types/node": "^24.2.1",
+		"wrangler": "^4.28.1"
+	}
+}
