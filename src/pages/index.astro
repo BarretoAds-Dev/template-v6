@@ -2,10 +2,86 @@
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// ============================================================================
+// 🚀 PÁGINA PRINCIPAL - TEMPLATE V6 ULTRA AVANZADO
+// ============================================================================
+// Página principal con SEO ultra-avanzado y optimizaciones híper-avanzadas
+// ============================================================================
+
+// Configuración SEO ultra-avanzada para la página principal
+const seoConfig = {
+  title: "Template V6 - By Barreto Dev | Performance & SEO Ultra Optimizado",
+  description: "Template ultra-optimizado con Astro + Tailwind CSS. Rendimiento de nivel enterprise con optimizaciones automáticas de imágenes, preloads inteligentes y Core Web Vitals optimizados.",
+  image: "/assets/background.svg",
+  pageType: "home" as const,
+  
+  // Configuración de servicios
+  serviceData: {
+    type: "Web Development & SEO Optimization",
+    category: "Technology Solutions",
+    location: "Global",
+    features: [
+      "Ultra-fast performance",
+      "SEO optimization",
+      "Image optimization",
+      "Core Web Vitals",
+      "AI-powered features"
+    ],
+    benefits: [
+      "Perfect Core Web Vitals scores",
+      "Top search rankings",
+      "Lightning-fast loading",
+      "Mobile-first design",
+      "Enterprise-level optimization"
+    ],
+    price: "Contact for pricing",
+    duration: "Custom",
+    targetAudience: ["Developers", "Businesses", "Agencies"]
+  },
+
+  // Configuración de IA
+  aiConfig: {
+    enableAllEngines: true,
+    optimizationLevel: "ultra" as const,
+    intentOptimization: true,
+    allowTraining: true
+  },
+
+  // Configuración de SERP Features
+  serpFeatures: {
+    enableFeaturedSnippets: true,
+    enablePeopleAlsoAsk: true,
+    enableLocalPack: false,
+    enableKnowledgeGraph: true,
+    enableRichResults: true
+  },
+
+  // Configuración E-E-A-T
+  eeatConfig: {
+    highlightExperience: true,
+    showcaseExpertise: true,
+    demonstrateAuthority: true,
+    buildTrust: true
+  },
+
+  // Configuración semántica
+  semanticConfig: {
+    enableEntityLinking: true,
+    optimizeTopicClusters: true,
+    enhanceSemanticKeywords: true
+  },
+
+  // Configuración de rendimiento
+  performanceConfig: {
+    preloadCriticalCSS: true,
+    preloadFonts: true,
+    preloadImages: true,
+    enableCriticalInline: true,
+    optimizeImages: true
+  }
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout {...seoConfig}>
+  <Welcome />
 </Layout>
