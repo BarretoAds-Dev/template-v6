@@ -1,22 +1,30 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '@/styles/global.css';
+import MetaHead from '@/layouts/MetaHead.astro';
+---
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+<!doctype html>
+  <!-- /*
+    ============================================================================
+    ||                                                                        ||
+    ||               ESTE ES UN TEMPLATE DE BY BARRETO DEV                    ||
+    ||                                                                        ||
+    ||                 Diseñado con ❤️ por By BARRETO DEV                     ||
+    ||           https://github.com/Barreto-dev/template-v6         		    ||
+    ||                                                                        ||
+    ============================================================================
+  */ -->
+<html lang="en">
+<MetaHead />
+
+
+	<body>
+
+      <main>
+        <slot />
+      </main>
+
+	</body>
+
+
+</html>

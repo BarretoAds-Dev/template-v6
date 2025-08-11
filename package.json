@@ -16,6 +16,7 @@
 		"optimize:full": "pnpm run optimize:images && pnpm run build && pnpm run optimize:preloads"
 	},
 	"dependencies": {
+		"@astrojs/check": "^0.9.4",
 		"@astrojs/cloudflare": "^12.6.3",
 		"@tailwindcss/vite": "^4.1.11",
 		"astro": "^5.12.9",
@@ -23,6 +24,7 @@
 		"glob": "^11.0.3",
 		"sharp": "^0.34.3",
 		"tailwindcss": "^4.1.11",
+		"typescript": "^5.9.2",
 		"vite-plugin-compression": "^0.5.1"
 	},
 	"devDependencies": {

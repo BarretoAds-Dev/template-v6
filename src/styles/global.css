@@ -1,0 +1,19 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+/* -------------------------------------------
+   1. Custom Theme Variables
+------------------------------------------- */
+/* Colores de marca como clases Tailwind - cambiar "marca" por el nombre rela de la empresa */
+
+
+.bg-template-plata {
+  background-color: var(--marca-plata, #f4f4f5);
+}
+.bg-template-dark {
+  background-color: var(--marca-dark, #020618);
+}
+
+/* -------------------------------------------
+   2. Universal CSS 
+------------------------------------------- */

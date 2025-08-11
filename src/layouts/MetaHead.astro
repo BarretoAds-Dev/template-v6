@@ -1,0 +1,74 @@
+---
+---
+
+
+<head>
+    <meta charset="UTF-8" />
+  {/* 🚀🚀🚀 Preloads Content Optimizations Start 🚀🚀🚀 */}
+  {/* 🎨 CSS CRÍTICO INLINE - MÁXIMA PRIORIDAD  */}
+  <style is:inline id="critical-css">
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+::-webkit-scrollbar {
+  display: none;
+}
+::selection {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  font-variant-alternates: normal;
+  font-stretch: normal;
+  font-display: swap;
+  text-rendering: optimizeSpeed;
+  font-weight: 400;
+  font-size-adjust: 0.5;
+  ascent-override: 90%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+
+body {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+  container-type: inline-size;
+  container-name: main-layout;
+  flex: 1 0 auto; 
+}
+footer {
+  grid-area: footer;
+}
+</style>
+  {/* 🎨 CSS CRÍTICOS EXTERNOS */}
+  <link rel="preload" href="/_astro/index.rQJiLwLk.css" as="style" fetchpriority="high" onload="this.onload=null;this.rel='stylesheet'">
+  {/* 📄 JavaScript de Página */}
+  <script type="module" src="/_astro/page.BLtQikpa.js" defer></script>
+  {/* 🚀 Preloads Content Optimizations End 🚀 */}
+
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Template V6</title>
+</head>
