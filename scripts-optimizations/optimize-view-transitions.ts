@@ -39,16 +39,16 @@ interface OptimizationConfig {
 
 const CONFIG: OptimizationConfig = {
   CACHE_NAME: 'vt-ultra-cache',
-  CACHE_VERSION: 'v3.0',
+  CACHE_VERSION: 'v3.1', // Incrementar versión para limpiar cache
   CACHE_EXPIRY: 60 * 60 * 1000, // 1 hora
-  MAX_CACHE_SIZE: 10 * 1024 * 1024, // 10MB
-  MAX_PREFETCH_CONCURRENT: 2,
+  MAX_CACHE_SIZE: 5 * 1024 * 1024, // Reducir a 5MB para evitar consumo excesivo
+  MAX_PREFETCH_CONCURRENT: 1, // Reducir concurrencia para evitar duplicaciones
   CRITICAL_RESOURCES: [
     '/assets/img-op/astro.svg',
     '/assets/img-op/background.svg'
   ] as const,
-  PREFETCH_DELAY: 100, // ms
-  PERFORMANCE_LOGGING: true
+  PREFETCH_DELAY: 300, // Aumentar delay para evitar prefetch agresivo
+  PERFORMANCE_LOGGING: false // Desactivar logs para production
 } as const;
 
 // --- CACHE GLOBAL AVANZADO ---
@@ -634,10 +634,9 @@ class UltraViewTransitionsOptimizer {
   }
 
   private shouldInterceptResource(url: string): boolean {
-    return url.includes('/assets/') || 
-           CONFIG.CRITICAL_RESOURCES.some(resource => url.includes(resource)) ||
-           url.includes('astro.svg') || 
-           url.includes('background.svg');
+    // Solo interceptar recursos específicos para evitar duplicaciones
+    return CONFIG.CRITICAL_RESOURCES.some(resource => url.includes(resource)) ||
+           (url.includes('/assets/img-op/') && (url.includes('astro.svg') || url.includes('background.svg')));
   }
 
   private isValidInternalLink(link: HTMLAnchorElement | null): boolean {

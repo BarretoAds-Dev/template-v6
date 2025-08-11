@@ -1,5 +1,5 @@
 ---
-import Welcome from '../components/Welcome.astro';
+// import Welcome from '../components/Welcome.astro'; // No usado
 import Layout from '../layouts/Layout.astro';
 import OptimizedImage from '@/components/OptimizedImage.astro';
 
@@ -191,48 +191,4 @@ const seoConfig = {
 
 </Layout> 
 
-<script>
-  // Optimización inmediata para LCP - Reducir latencia crítica
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', optimizeLCP);
-  } else {
-    optimizeLCP();
-  }
-
-  function optimizeLCP() {
-    // Marcar el logo como visible inmediatamente
-    const logo = document.querySelector('img[alt*="Astro framework logo"]') as HTMLElement;
-    if (logo) {
-      logo.style.opacity = '1';
-      logo.style.transform = 'translateZ(0)'; // Forzar composición de capas
-    }
-    
-    // Optimizar renderizado de elementos críticos
-    const criticalElements = document.querySelectorAll('h1, .button');
-    criticalElements.forEach(el => {
-      const element = el as HTMLElement;
-      element.style.willChange = 'auto';
-      element.style.transform = 'translateZ(0)';
-    });
-  }
-
-  // Intersection Observer para elementos no críticos - Carga diferida
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const element = entry.target as HTMLElement;
-          element.style.opacity = '1';
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      rootMargin: '100px 0px', // Aumentar margen para carga más temprana
-      threshold: 0.01 // Reducir threshold para detección más temprana
-    });
-
-    // Observar elementos no críticos
-    const nonCriticalElements = document.querySelectorAll('.optimized-image');
-    nonCriticalElements.forEach(el => observer.observe(el));
-  }
-</script>
+<!-- Script de optimización removido para evitar duplicación -->

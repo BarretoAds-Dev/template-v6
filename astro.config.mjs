@@ -18,7 +18,7 @@ export default defineConfig({
   }),
   prefetch: {
     prefetchAll: false,
-    defaultStrategy: 'hover',
+    defaultStrategy: 'load', // Cambiar de 'hover' a 'load' para evitar duplicaciones
   },
 
   // Optimizaciones para reducir latencia crítica
@@ -37,8 +37,8 @@ export default defineConfig({
           },
         },
       },
-      // Optimizar CSS
-      cssCodeSplit: true,
+      // Optimizar CSS - cambiar a false para un solo archivo CSS
+      cssCodeSplit: false, // Cambio: un solo CSS para todo el sitio
       // Reducir tamaño de chunks
       chunkSizeWarningLimit: 1000,
     },
