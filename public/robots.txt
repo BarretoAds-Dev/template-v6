@@ -38,7 +38,7 @@ Disallow: /.*\.cache/
 Disallow: /.*\.log/
 
 # Sitemap
-Sitemap: https://yourbusiness.com/sitemap.xml
+Sitemap: https://template-v6.pages.dev/sitemap.xml
 
 # Crawl-delay para ser respetuoso con el servidor
 Crawl-delay: 1

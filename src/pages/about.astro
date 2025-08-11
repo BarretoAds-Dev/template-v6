@@ -1,0 +1,238 @@
+---
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+import OptimizedImage from '@/components/OptimizedImage.astro';
+
+// Configuración SEO para la página About
+const seoConfig = {
+  title: "About - Template V6 | By Barreto Dev",
+  description: "Learn more about Template V6, an ultra-optimized Astro template with advanced SEO and performance features.",
+  image: "/assets/img-op/astro.svg",
+  pageType: "about" as const,
+  
+  // Configuración de servicios
+  serviceData: {
+    type: "Template Development & SEO Optimization",
+    category: "Web Development",
+    location: "Global",
+    features: [
+      "Ultra-fast performance",
+      "SEO optimization",
+      "Image optimization",
+      "Core Web Vitals",
+      "AI-powered features"
+    ],
+    benefits: [
+      "Perfect Core Web Vitals scores",
+      "Top search rankings",
+      "Lightning-fast loading",
+      "Mobile-first design",
+      "Enterprise-level optimization"
+    ],
+    price: "Free Template",
+    duration: "Instant",
+    targetAudience: ["Developers", "Agencies", "Businesses"]
+  },
+
+  // Configuración de IA
+  aiConfig: {
+    enableAllEngines: true,
+    optimizationLevel: "ultra" as const,
+    intentOptimization: true,
+    allowTraining: true
+  },
+
+  // Configuración de SERP Features
+  serpFeatures: {
+    enableFeaturedSnippets: true,
+    enablePeopleAlsoAsk: true,
+    enableLocalPack: false,
+    enableKnowledgeGraph: true,
+    enableRichResults: true
+  },
+
+  // Configuración E-E-A-T
+  eeatConfig: {
+    highlightExperience: true,
+    showcaseExpertise: true,
+    demonstrateAuthority: true,
+    buildTrust: true
+  },
+
+  // Configuración semántica
+  semanticConfig: {
+    enableEntityLinking: true,
+    optimizeTopicClusters: true,
+    enhanceSemanticKeywords: true
+  },
+
+  // Configuración de rendimiento
+  performanceConfig: {
+    preloadCriticalCSS: true,
+    preloadFonts: true,
+    preloadImages: true,
+    enableCriticalInline: true,
+    optimizeImages: true
+  }
+};
+---
+
+<Layout {...seoConfig}>
+  <div class="relative min-h-screen font-sans">
+
+    <!-- Background con transición -->
+    <figure transition:name="astro-background" transition:animate="fade" class="size-full">
+      <OptimizedImage
+        src="/assets/img-op/background.svg"
+        alt="Astro framework background with modern design elements" 
+        width={1000}
+        height={1000}
+        className="fixed top-0 left-0 w-full h-full -z-10 blur-[100px]"
+        fetchPriority="low"
+        responsive={false}
+        loading="lazy"
+        preload={false}
+      />
+      <figcaption class="sr-only">Astro Framework Background</figcaption> 
+    </figure>
+
+    <main class="min-h-screen flex flex-col justify-center items-center py-8 md:py-16">
+      <section class="w-full max-w-4xl mx-auto px-4 text-center">
+
+        <!-- Logo con transición -->
+        <div class="flex justify-center mb-12">
+          <a href="https://astro.build" class="inline-block">
+            <figure transition:name="astro-logo" transition:animate="fade" class="inline-block">
+              <OptimizedImage
+                src="/assets/img-op/astro.svg"
+                alt="Astro framework logo - Modern web framework for content-driven websites"
+                width={80}
+                height={40}
+                className="size-full"
+                loading="eager"
+                fetchPriority="high"
+                preload={true}
+                responsive={false}
+              />
+              <figcaption class="sr-only">Astro Framework Logo</figcaption>
+            </figure>
+          </a>
+        </div>
+
+        <!-- Título con transición -->
+        <h1 
+          class="text-4xl md:text-6xl font-bold text-gray-800 mb-8 text-center"
+          transition:name="welcome-title"
+          transition:animate="fade"
+        >
+          About Template V6
+        </h1>
+
+        <!-- Código con transición -->
+        <div class="flex justify-center items-center my-8 px-4">
+          <div 
+            class="max-w-md w-full flex justify-center items-center flex-col bg-gradient-to-tr from-pink-100 via-purple-100 to-purple-200 rounded-xl p-6 shadow-lg text-center border border-purple-200/50 hover:shadow-xl transition-all duration-300" 
+            transition:name="code-block"
+            transition:animate="fade"
+          >
+            <p class="font-mono font-semibold bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 bg-clip-text text-transparent text-xl leading-relaxed">
+              Ultra-Optimized Astro Template
+            </p>
+            <p class="mt-2 text-sm text-purple-600/70 font-medisum">
+              Next Generation Performance
+            </p>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="max-w-3xl mx-auto mb-12">
+          <p class="text-xl text-gray-600 leading-relaxed text-center">
+            Template V6 is an enterprise-grade Astro template designed for maximum performance, 
+            SEO optimization, and developer experience. Built with modern web technologies 
+            and optimized for Core Web Vitals.
+          </p>
+        </div>
+
+        <!-- Botón con transición -->
+        <div class="flex justify-center mb-16">
+          <a 
+            class="button px-8 py-3 text-lg font-medium" 
+            href="/"
+            transition:name="docs-button"
+            transition:animate="fade"
+          >
+            Back to Home
+          </a>
+        </div>
+
+        <!-- Características -->
+        <div class="grid md:grid-cols-3 gap-8 mt-16">
+          <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Performance</h3>
+            <p class="text-gray-600 leading-relaxed">Optimized for Core Web Vitals with perfect scores in Lighthouse.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">SEO</h3>
+            <p class="text-gray-600 leading-relaxed">Advanced SEO optimization with AI-powered meta tags and schema markup.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Developer Experience</h3>
+            <p class="text-gray-600 leading-relaxed">Modern tooling with TypeScript, Tailwind CSS, and automated optimizations.</p>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+
+
+  </div>
+
+
+</Layout> 
+
+<script>
+  // Optimización inmediata para LCP - Reducir latencia crítica
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeLCP);
+  } else {
+    optimizeLCP();
+  }
+
+  function optimizeLCP() {
+    // Marcar el logo como visible inmediatamente
+    const logo = document.querySelector('img[alt*="Astro framework logo"]') as HTMLElement;
+    if (logo) {
+      logo.style.opacity = '1';
+      logo.style.transform = 'translateZ(0)'; // Forzar composición de capas
+    }
+    
+    // Optimizar renderizado de elementos críticos
+    const criticalElements = document.querySelectorAll('h1, .button');
+    criticalElements.forEach(el => {
+      const element = el as HTMLElement;
+      element.style.willChange = 'auto';
+      element.style.transform = 'translateZ(0)';
+    });
+  }
+
+  // Intersection Observer para elementos no críticos - Carga diferida
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          element.style.opacity = '1';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '100px 0px', // Aumentar margen para carga más temprana
+      threshold: 0.01 // Reducir threshold para detección más temprana
+    });
+
+    // Observar elementos no críticos
+    const nonCriticalElements = document.querySelectorAll('.optimized-image');
+    nonCriticalElements.forEach(el => observer.observe(el));
+  }
+</script>

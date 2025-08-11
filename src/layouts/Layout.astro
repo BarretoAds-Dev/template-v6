@@ -91,11 +91,11 @@ const props = Astro.props;
     ||                                                                        ||
     ============================================================================
   */ -->
-<html lang="en">
-<MetaHead {...props} />
+  <html lang="es" transition:animate="none">
+    <MetaHead {...props} />
 
 <body>
-  <main>
+  <main transition:animate="slide">
     <slot />
   </main>
 </body>

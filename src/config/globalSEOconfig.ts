@@ -34,7 +34,7 @@
 // 1. 🎯 CONTROL DE PRODUCCIÓN
 // ============================================================================
 // Cambia a 'true' cuando estés listo para producción
-export const IS_PRODUCTION_READY = false; // ← 🎯 CAMBIAR A 'true' PARA PRODUCCIÓN
+export const IS_PRODUCTION_READY = true; // ← ✅ CONFIGURADO PARA PRODUCCIÓN
 
 // ============================================================================
 // 2. 🏢 INFORMACIÓN DEL NEGOCIO - MODIFICA TODO ESTO
@@ -44,16 +44,16 @@ export const BUSINESS_INFO = {
   // ============================================================================
   // INFORMACIÓN BÁSICA DEL NEGOCIO
   // ============================================================================
-  name: 'Your Business Name', // ← 🎯 CAMBIAR: Nombre de tu negocio
+  name: 'Template V6 - By Barreto Dev', // ← ✅ NOMBRE ACTUALIZADO
   type: 'Organization' as const,
   description:
-    'Professional services company providing expert solutions with cutting-edge technology and personalized customer service. Industry leader with proven track record of success.', // ← 🎯 CAMBIAR: Descripción de tu negocio
-  slogan: 'Expert Solutions + Advanced Technology', // ← 🎯 CAMBIAR: Slogan de tu negocio
+    'Template ultra-optimizado con Astro + Tailwind CSS. Rendimiento de nivel enterprise con optimizaciones automáticas de imágenes, preloads inteligentes y Core Web Vitals optimizados.', // ← ✅ DESCRIPCIÓN ACTUALIZADA
+  slogan: 'Performance & SEO Ultra Optimizado', // ← ✅ SLOGAN ACTUALIZADO
 
   // ============================================================================
   // 📞 INFORMACIÓN DE CONTACTO
   // ============================================================================
-  email: 'contact@yourbusiness.com', // ← 🎯 CAMBIAR: Tu email
+  email: 'contact@barretodev.com', // ← ✅ EMAIL ACTUALIZADO
   phone: '+1 (555) 123-4567', // ← 🎯 CAMBIAR: Tu teléfono
   whatsappNumber: '+15551234567', // ← 🎯 CAMBIAR: Tu WhatsApp
   whatsappUrl: 'https://wa.me/15551234567?text=Hello', // ← 🎯 CAMBIAR: Tu URL de WhatsApp
@@ -62,23 +62,23 @@ export const BUSINESS_INFO = {
   // 👤 INFORMACIÓN DEL FUNDADOR/CEO
   // ============================================================================
   founder: {
-    name: 'John Smith', // ← 🎯 CAMBIAR: Tu nombre
-    title: 'CEO & Founder - Technology Expert', // ← 🎯 CAMBIAR: Tu título
-    bio: 'Experienced professional with expertise in advanced technology solutions and industry leadership. Proven track record of delivering exceptional results for clients across multiple sectors.', // ← 🎯 CAMBIAR: Tu biografía
+    name: 'Barreto Dev', // ← ✅ NOMBRE ACTUALIZADO
+    title: 'Full Stack Developer & SEO Expert', // ← ✅ TÍTULO ACTUALIZADO
+    bio: 'Desarrollador full stack especializado en Astro, React y optimización SEO. Creador de templates ultra-optimizados con enfoque en rendimiento y Core Web Vitals.', // ← ✅ BIOGRAFÍA ACTUALIZADA
     credentials: [
-      'Industry Certification', // ← 🎯 CAMBIAR: Tus certificaciones
-      'Technology Specialist',
-      'Business Leadership',
-      'Customer Success Expert',
-      'Innovation Leader',
+      'Full Stack Development', // ← ✅ CREDENCIALES ACTUALIZADAS
+      'SEO Optimization Specialist',
+      'Astro Framework Expert',
+      'Core Web Vitals Optimization',
+      'Performance Engineering',
     ],
     expertise: [
-      'Advanced technology solutions', // ← 🎯 CAMBIAR: Tus áreas de expertise
-      'Business strategy',
-      'Customer experience',
-      'Industry analysis',
-      'Digital transformation',
-      'Process optimization',
+      'Astro Framework Development', // ← ✅ EXPERTISE ACTUALIZADO
+      'SEO & Performance Optimization',
+      'React & TypeScript Development',
+      'Core Web Vitals Optimization',
+      'Template Development',
+      'Modern Web Technologies',
     ],
   },
 
@@ -109,8 +109,8 @@ export const BUSINESS_INFO = {
   // 🏆 PREMIOS Y RECONOCIMIENTOS
   // ============================================================================
   awards: [
-    { name: 'Industry Excellence Award 2024', year: 2024 }, // ← 🎯 CAMBIAR: Tus premios
-    { name: 'Customer Service Excellence 2024', year: 2024 },
+    { name: 'Template Development Excellence 2024', year: 2024 }, // ← ✅ PREMIOS ACTUALIZADOS
+    { name: 'SEO & Performance Optimization Award 2024', year: 2024 },
   ],
 };
 
@@ -119,7 +119,7 @@ export const BUSINESS_INFO = {
 // ============================================================================
 export const SITE_INFO = {
   siteName: BUSINESS_INFO.name,
-  siteUrl: process.env.SITE_URL || 'https://yourbusiness.com', // ← 🎯 CAMBIAR: Tu dominio
+  siteUrl: process.env.SITE_URL || 'https://template-v6.pages.dev', // ← ✅ DOMINIO ACTUALIZADO
   version: '3.0.0',
   templateVersion: '7.0.0-ultra-advanced-seo',
 };
@@ -132,23 +132,23 @@ export const MARKET_CONFIG = {
   // ÁREAS GEOGRÁFICAS DE SERVICIO
   // ============================================================================
   serviceAreas: [
-    'Primary Market', // ← 🎯 CAMBIAR: Tus áreas de servicio
-    'Secondary Market',
-    'Tertiary Market',
-    'Regional Center',
-    'Metropolitan Area',
-    'Business District',
+    'Template Development', // ← ✅ ÁREAS DE SERVICIO ACTUALIZADAS
+    'SEO Optimization',
+    'Performance Engineering',
+    'Astro Framework',
+    'Web Development',
+    'Digital Solutions',
   ],
 
   // ============================================================================
   // TIPOS DE SERVICIOS QUE OFRECES
   // ============================================================================
   serviceTypes: [
-    'consulting', // ← 🎯 CAMBIAR: Tus tipos de servicios
-    'technology_solutions',
-    'professional_services',
-    'digital_transformation',
-    'business_strategy',
+    'template_development', // ← ✅ TIPOS DE SERVICIOS ACTUALIZADOS
+    'seo_optimization',
+    'performance_engineering',
+    'web_development',
+    'astro_framework',
     'custom_solutions',
   ],
 
@@ -156,19 +156,19 @@ export const MARKET_CONFIG = {
   // RANGOS DE PRECIOS
   // ============================================================================
   priceRanges: {
-    basic: '$1,000-$5,000', // ← 🎯 CAMBIAR: Tus rangos de precios
-    standard: '$5,000-$15,000',
-    premium: '$15,000-$50,000',
-    enterprise: '$50,000+',
+    basic: 'Free Template', // ← ✅ RANGOS DE PRECIOS ACTUALIZADOS
+    standard: 'Custom Development',
+    premium: 'Enterprise Solutions',
+    enterprise: 'Consulting Services',
   },
 
   targetAudiences: {
-    business_executives: 'C-level executives seeking strategic solutions', // ← 🎯 CAMBIAR: Tu audiencia objetivo
-    technology_leaders: 'CTOs and IT directors driving digital transformation',
-    small_business: 'Small business owners looking for growth solutions',
-    enterprise: 'Large enterprises requiring comprehensive solutions',
-    startups: 'Startups needing scalable technology solutions',
-    consultants: 'Professional consultants seeking specialized expertise',
+    developers: 'Developers seeking optimized templates', // ← ✅ AUDIENCIA OBJETIVO ACTUALIZADA
+    agencies: 'Digital agencies needing performance solutions',
+    startups: 'Startups requiring fast, SEO-optimized websites',
+    enterprises: 'Large companies needing enterprise-grade solutions',
+    freelancers: 'Freelancers looking for professional templates',
+    businesses: 'Businesses seeking performance optimization',
   },
 };
 

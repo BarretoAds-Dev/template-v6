@@ -307,9 +307,6 @@ if (useArtDirection) {
 
   // Optimización adicional para LCP
   const isLCPElement = isCritical && (src?.includes('astro.svg') || src?.includes('logo') || src?.includes('hero'));
-  
-  // Optimización para reducir latencia crítica
-  const isCriticalSVG = isLCPElement && src?.endsWith('.svg');
 
 // Validar en desarrollo
 if (import.meta.env.MODE === 'development') {
@@ -321,9 +318,9 @@ if (import.meta.env.MODE === 'development') {
 }
 ---
 
-<!-- ============================================================================
+{/* -- ============================================================================
      🎨 RENDERIZADO DEL COMPONENTE
-     ============================================================================ -->
+     ============================================================================ */}
 
 {shouldPreload && (
   <link
@@ -366,7 +363,7 @@ if (import.meta.env.MODE === 'development') {
         alt={alt}
         width={fallback!.width}
         height={fallback!.height}
-        class={`optimized-img ${className}`}
+        class={`optimized-image ${className}`}
         loading={loading}
         fetchpriority={fetchPriority}
         decoding="async"
@@ -384,7 +381,7 @@ if (import.meta.env.MODE === 'development') {
         alt={alt}
         width={width}
         height={height}
-        class={`optimized-img ${className}`}
+        class={`optimized-image ${className}`}
         loading={loading}
         fetchpriority={fetchPriority}
         decoding="async"
@@ -395,18 +392,12 @@ if (import.meta.env.MODE === 'development') {
   )}
 </picture>
 
-<!-- ============================================================================
+{/* -- ============================================================================
      🎨 ESTILOS OPTIMIZADOS
-     ============================================================================ -->
+     ============================================================================ */}
 
 <style>
   .optimized-image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .optimized-img {
     display: block;
     width: 100%;
     height: auto;
@@ -416,15 +407,15 @@ if (import.meta.env.MODE === 'development') {
 
   /* Optimizaciones responsive */
   @media (max-width: 768px) {
-    .optimized-img {
+    .optimized-image {
       object-position: center;
     }
   }
 </style>
 
-<!-- ============================================================================
+{/* -- ============================================================================
      🧠 SCRIPT DE OPTIMIZACIÓN
-     ============================================================================ -->
+     ============================================================================ */}
 
 <script>
   function optimizeImages() {

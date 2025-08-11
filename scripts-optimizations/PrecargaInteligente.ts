@@ -1,19 +1,20 @@
 // ============================================================================
-// 🚀 SCRIPT DE PRELOADS ULTRA OPTIMIZADO v3.1 - ASTRO TAILWIND FUSION
+// 🚀 SCRIPT DE PRELOADS ULTRA OPTIMIZADO v3.2 - ASTRO TAILWIND FUSION
 // ============================================================================
-// MEJORAS v3.1:
-// 1. Eliminación de duplicaciones innecesarias
-// 2. Orden estratégico optimizado: CSS crítico → CSS → JS → Fuentes
-// 3. Sin preconnect interno, sin meta description
-// 4. Sin prefetch duplicados de preloads
-// 5. CSS crítico inline como primera prioridad
-// 6. Eliminación de preloads de imágenes eager
-// 7. Comunicación SW ultra minificada
-// 8. Estrategias diferenciadas por tipo de recurso
-// 9. Optimizado para Astro + Tailwind CSS
-// 10. Spinner de progreso elegante con ora
-// 11. Colores y reportes mejorados con chalk
-// 12. Parsing HTML como respaldo con cheerio
+// MEJORAS v3.2:
+// 1. Eliminación de preloads CSS no críticos innecesarios
+// 2. Solo modulepreload para JavaScript crítico
+// 3. CSS crítico inline como primera prioridad
+// 4. Orden estratégico optimizado: CSS crítico → JS → Fuentes
+// 5. Sin preconnect interno, sin meta description
+// 6. Sin prefetch duplicados de preloads
+// 7. Eliminación de preloads de imágenes eager
+// 8. Comunicación SW ultra minificada
+// 9. Estrategias diferenciadas por tipo de recurso
+// 10. Optimizado para Astro + Tailwind CSS
+// 11. Spinner de progreso elegante con ora
+// 12. Colores y reportes mejorados con chalk
+// 13. Parsing HTML como respaldo con cheerio
 // ============================================================================
 
 import fs from 'fs/promises';
@@ -283,7 +284,6 @@ async function detectCriticalResources(): Promise<DetectedResources> {
   };
 
   logger.log('📊 Resumen de recursos detectados:');
-  logger.log(`  📄 CSS: ${resources.css.length}`);
   logger.log(`  📜 JS: ${resources.js.length}`);
   logger.log(`  📄 JS de página: ${resources.pageJs.length}`);
   logger.log(`  🔤 Fuentes: ${resources.fonts.length}`);
@@ -349,7 +349,6 @@ function generateUltraOptimizedPreloads(resources: DetectedResources): string {
     if (indexJs) {
       preloads.push(`{/* ⚡ JavaScript Crítico (index*.js) */}`);
       preloads.push(`<link rel="modulepreload" href="/_astro/${indexJs}" as="script" fetchpriority="high">`);
-      preloads.push(`<script type="module" src="/_astro/${indexJs}" fetchpriority="high"></script>`);
     }
   }
 
@@ -357,17 +356,12 @@ function generateUltraOptimizedPreloads(resources: DetectedResources): string {
   if (resources.pageJs.length > 0) {
     preloads.push(`{/* 📄 JavaScript de Página (page*.js) */}`);
     resources.pageJs.forEach(pageJs => {
-      preloads.push(`<script type="module" src="/_astro/${pageJs}" defer></script>`);
+      preloads.push(`<link rel="modulepreload" href="/_astro/${pageJs}" as="script">`);
     });
   }
 
-  // 4. CSS no crítico
-  if (resources.css.length > 0) {
-    preloads.push(`{/* 🎨 CSS no crítico */}`);
-    resources.css.forEach(cssFile => {
-      preloads.push(`<link rel="preload" href="/_astro/${cssFile}" as="style" onload="this.onload=null;this.rel='stylesheet'">`);
-    });
-  }
+  // 4. CSS no crítico - ELIMINADO: Solo modulepreload es suficiente
+  // Los estilos se cargan automáticamente cuando son necesarios
 
   // 5. Fuentes críticas
   if (resources.fonts.length > 0) {
@@ -402,7 +396,6 @@ function generateFinalReport(resources: DetectedResources, duration: number): vo
   console.log(chalk.bold.green('='.repeat(60)));
   console.log(chalk.bold('Recursos inyectados en el Head:'));
   
-  if(resources.css.length > 0) console.log(chalk.cyan(`  🎨 ${resources.css.length} Stylesheet(s)`));
   if(resources.js.length > 0) console.log(chalk.yellow(`  ⚡ ${resources.js.length} Script(s)`));
   if(resources.pageJs.length > 0) console.log(chalk.magenta(`  📄 ${resources.pageJs.length} Script(s) de página`));
   if(resources.fonts.length > 0) console.log(chalk.green(`  🔤 ${resources.fonts.length} Fuente(s)`));
@@ -475,7 +468,7 @@ async function injectPreloads(filePath: string, preloadHtml: string): Promise<vo
  */
 export async function runUltraPreloadOptimization(): Promise<void> {
   console.log(chalk.bold.yellow('\n' + '='.repeat(60)));
-  console.log(chalk.bold.yellow('🚀 INICIANDO OPTIMIZACIÓN DE PRELOADS v3.1 🚀'));
+  console.log(chalk.bold.yellow('🚀 INICIANDO OPTIMIZACIÓN DE PRELOADS v3.2 🚀'));
   console.log(chalk.bold.yellow('='.repeat(60)));
 
   const mainSpinner = ora('Analizando recursos críticos...').start();
