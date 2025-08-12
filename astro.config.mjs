@@ -18,7 +18,7 @@ export default defineConfig({
   }),
   prefetch: {
     prefetchAll: false,
-    defaultStrategy: 'load', 
+    defaultStrategy: 'hover', 
   },
 
   // Optimizaciones para reducir latencia crítica
