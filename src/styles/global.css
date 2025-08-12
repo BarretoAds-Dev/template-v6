@@ -17,3 +17,27 @@
 /* -------------------------------------------
    2. Universal CSS 
 ------------------------------------------- */
+
+/* -------------------------------------------
+   3. View Transitions: pistas de composición
+   - Evitar animaciones no compuestas (layout/paint)
+   - Forzar aceleración vía opacity/transform
+------------------------------------------- */
+[transition\:animate="fade"],
+[transition\:animate="scale"],
+[transition\:animate="slide"] {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+[transition\:scope] {
+  /* Sugerencia de composición para el contenedor del scope */
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+/* Elementos persistentes: evitar repaints innecesarios */
+[transition\:persist] {
+  contain: paint;
+}

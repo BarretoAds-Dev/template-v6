@@ -1,7 +1,7 @@
 ---
 // import Welcome from '../components/Welcome.astro'; // No usado
 import Layout from '../layouts/Layout.astro';
-import OptimizedImage from '@/components/OptimizedImage.astro';
+import OptimizedImage from '@/components/ui/OptimizedImage.astro';
 
 // Configuración SEO para la página About
 const seoConfig = {
@@ -80,21 +80,7 @@ const seoConfig = {
 <Layout {...seoConfig}>
   <div class="relative min-h-screen font-sans">
 
-    <!-- Background con transición -->
-    <figure transition:name="astro-background" transition:animate="fade" class="size-full">
-      <OptimizedImage
-        src="/assets/img-op/background.svg"
-        alt="Astro framework background with modern design elements" 
-        width={1000}
-        height={1000}
-        className="fixed top-0 left-0 w-full h-full -z-10 blur-[100px]"
-        fetchPriority="low"
-        responsive={false}
-        loading="lazy"
-        preload={false}
-      />
-      <figcaption class="sr-only">Astro Framework Background</figcaption> 
-    </figure>
+   
 
     <main class="min-h-screen flex flex-col justify-center items-center py-8 md:py-16">
       <section class="w-full max-w-4xl mx-auto px-4 text-center">
@@ -102,7 +88,7 @@ const seoConfig = {
         <!-- Logo con transición -->
         <div class="flex justify-center mb-12">
           <a href="https://astro.build" class="inline-block">
-            <figure transition:name="astro-logo" transition:animate="fade" class="inline-block">
+            <figure transition:name="astro-logo" transition:animate="fade" transition:persist class="inline-block">
               <OptimizedImage
                 src="/assets/img-op/astro.svg"
                 alt="Astro framework logo - Modern web framework for content-driven websites"
@@ -111,7 +97,7 @@ const seoConfig = {
                 className="size-full"
                 loading="eager"
                 fetchPriority="high"
-                preload={true}
+                preload={false}
                 responsive={false}
               />
               <figcaption class="sr-only">Astro Framework Logo</figcaption>
@@ -191,4 +177,3 @@ const seoConfig = {
 
 </Layout> 
 
-<!-- Script de optimización removido para evitar duplicación -->

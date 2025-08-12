@@ -11,6 +11,8 @@ declare namespace astroHTML.JSX {
   interface HTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -19,6 +21,8 @@ declare namespace astroHTML.JSX {
   interface AnchorHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -27,6 +31,8 @@ declare namespace astroHTML.JSX {
   interface ImgHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -35,6 +41,8 @@ declare namespace astroHTML.JSX {
   interface DivHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -43,6 +51,8 @@ declare namespace astroHTML.JSX {
   interface H1HTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -51,6 +61,8 @@ declare namespace astroHTML.JSX {
   interface H2HTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -59,6 +71,8 @@ declare namespace astroHTML.JSX {
   interface PHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -67,6 +81,8 @@ declare namespace astroHTML.JSX {
   interface CodeHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -75,6 +91,8 @@ declare namespace astroHTML.JSX {
   interface FigureHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -83,6 +101,8 @@ declare namespace astroHTML.JSX {
   interface HtmlHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;
@@ -91,6 +111,8 @@ declare namespace astroHTML.JSX {
   interface MainHTMLAttributes {
     'transition:name'?: string;
     'transition:animate'?: 'fade' | 'slide' | 'scale' | 'persist' | 'none';
+    'transition:persist'?: boolean;
+    'transition:scope'?: string;
     'transition:duration'?: string;
     'transition:delay'?: string;
     'transition:easing'?: string;

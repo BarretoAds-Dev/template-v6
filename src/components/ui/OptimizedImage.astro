@@ -306,7 +306,7 @@ if (useArtDirection) {
     : processedData.legacyAvif.replace(/\W+/g, '_');
 
   // Optimización adicional para LCP
-  const isLCPElement = isCritical && (src?.includes('astro.svg') || src?.includes('logo') || src?.includes('hero'));
+  const isLCPElement = isCritical && (src?.includes('logo') || src?.includes('hero'));
 
 // Validar en desarrollo
 if (import.meta.env.MODE === 'development') {

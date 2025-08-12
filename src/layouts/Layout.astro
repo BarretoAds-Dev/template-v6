@@ -1,6 +1,6 @@
 ---
 import '@/styles/global.css';
-import { fade } from 'astro:transitions';
+import OptimizedImage from '@/components/ui/OptimizedImage.astro';
 
 import MetaHead from '@/layouts/MetaHead.astro';
 import type { 
@@ -97,7 +97,22 @@ const props = Astro.props;
     <MetaHead {...props} />
 
 <body>
-  <main transition:animate="fade">
+  <figure transition:persist class="size-full">
+    <OptimizedImage
+      src="/assets/img-op/background.svg"
+      alt="Astro framework background with modern design elements" 
+      width={1000}
+      height={1000}
+      className="fixed top-0 left-0 w-full h-full -z-10 blur-[100px]"
+      fetchPriority="high"
+      responsive={false}
+      loading="eager"
+      preload={true}
+    />  <figcaption class="sr-only">Astro Framework Background</figcaption> 
+  
+  </figure>
+  <main transition:animate="fade" transition:scope="page">
+   
     <slot />
   </main>
 </body>
