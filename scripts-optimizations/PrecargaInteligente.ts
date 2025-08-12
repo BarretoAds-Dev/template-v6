@@ -343,22 +343,8 @@ function generateUltraOptimizedPreloads(resources: DetectedResources): string {
   preloads.push(`  }`);
   preloads.push(`</style>`);
 
-  // 2. JavaScript Crítico (index*.js)
-  if (resources.js.length > 0) {
-    const indexJs = resources.js.find(file => file.includes('index'));
-    if (indexJs) {
-      preloads.push(`{/* ⚡ JavaScript Crítico (index*.js) */}`);
-      preloads.push(`<link rel="modulepreload" href="/_astro/${indexJs}" as="script" fetchpriority="high">`);
-    }
-  }
-
-  // 3. JavaScript de Página (page*.js)
-  if (resources.pageJs.length > 0) {
-    preloads.push(`{/* 📄 JavaScript de Página (page*.js) */}`);
-    resources.pageJs.forEach(pageJs => {
-      preloads.push(`<link rel="modulepreload" href="/_astro/${pageJs}" as="script">`);
-    });
-  }
+  // 2-3. Preloads de JavaScript desactivados
+  // Gestionados automáticamente por Astro/Vite para evitar duplicación
 
   // 4. CSS no crítico - ELIMINADO: Solo modulepreload es suficiente
   // Los estilos se cargan automáticamente cuando son necesarios
