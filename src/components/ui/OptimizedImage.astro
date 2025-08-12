@@ -417,43 +417,42 @@ if (import.meta.env.MODE === 'development') {
      🧠 SCRIPT DE OPTIMIZACIÓN
      ============================================================================ */}
 
-<script>
-  function optimizeImages() {
-    const pictures = document.querySelectorAll('.optimized-image');
+<script is:inline>
+  // Evitar múltiples registros en SPA: inicializar una sola vez
+  if (!window.__optimizedImagesInit) {
+    window.__optimizedImagesInit = true;
 
-    pictures.forEach((picture) => {
-      const img = picture.querySelector('img');
-      if (!img) return;
+    const optimizeImages = () => {
+      const pictures = document.querySelectorAll('.optimized-image');
+      pictures.forEach((picture) => {
+        const img = picture.querySelector('img');
+        if (!img) return;
 
-      // Intersection Observer para lazy loading optimizado
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const img = entry.target as HTMLImageElement;
-              img.style.opacity = '1';
-              observer.unobserve(img);
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                if (el && el.style) {
+                  el.style.opacity = '1';
+                }
+                observer.unobserve(el);
+              }
             }
-          });
-        },
-        {
-          rootMargin: '50px 0px',
-          threshold: 0.1,
-        }
-      );
+          },
+          { rootMargin: '50px 0px', threshold: 0.1 }
+        );
 
-      if (img) {
         observer.observe(img);
-      }
-    });
-  }
+      });
+    };
 
-  // Ejecutar en carga inicial y después de navegación de Astro
-  document.addEventListener('astro:page-load', optimizeImages);
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', optimizeImages);
-  } else {
-    optimizeImages();
+    // Ejecutar una vez y reusar en cada navegación sin duplicar listeners
+    document.addEventListener('astro:page-load', optimizeImages);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', optimizeImages, { once: true });
+    } else {
+      optimizeImages();
+    }
   }
-</script> 
+</script>
