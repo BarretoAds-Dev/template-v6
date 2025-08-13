@@ -63,12 +63,7 @@ const canonicalUrl = generateAbsoluteURL(path);
 
 // 4. DETECCIÓN ULTRA AVANZADA DE TIPO DE PÁGINA
 const isHomePage = path === '/' || path === '/index' || path === '/index.html';
-const isBlogPost = path.includes('/blog/') && path !== '/blog' && path !== '/blog/';
-const isServicePage = path.includes('/servicios/') || path.includes('/services/');
-const isContactPage = path.includes('/contactanos') || path.includes('/contact');
-const isLandingPage = pageType === 'landing' || path.includes('/landing/');
-const isProductPage = pageType === 'product' || path.includes('/product/');
-const isAboutPage = pageType === 'about' || path.includes('/about');
+
 
 // 5. CONFIGURACIÓN GEOGRÁFICA ULTRA AVANZADA
 const currentCityName = geoData?.city || business.address?.city || 'Business City';
@@ -157,14 +152,7 @@ const ultraPageContext = (() => {
   context += `E-E-A-T: ${eeat.experience.yearsInBusiness} years experience, ${eeat.expertise.certifications.length} certifications. `;
 
   if (isHomePage) context += 'Main company information and service overview. ';
-  else if (isBlogPost)
-    context += `Specialized article about ${articleData?.category || 'professional topics'}. `;
-  else if (isServicePage)
-    context += `Service details: ${serviceData?.type || 'professional services'}. `;
-  else if (isContactPage) context += 'Contact information and business location. ';
-  else if (isLandingPage) context += 'Conversion-optimized landing page. ';
-  else if (isProductPage) context += 'Product information and specifications. ';
-  else if (isAboutPage) context += 'Company background, team, and expertise. ';
+
 
   return context;
 })();

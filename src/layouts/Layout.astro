@@ -47,12 +47,6 @@ const props = Astro.props;
   </main>
 
 
-  <script type="module" is:inline>
-    import '../../scripts-optimizations/register-sw.ts';
-    import '../../scripts-optimizations/sw-update-panel.ts';
-  </script>
-  <script is:inline>
-    window.__BUILD_ID__ = "${Date.now()}";
-  </script>
+
 </body>
 </html>
