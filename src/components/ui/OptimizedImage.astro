@@ -239,6 +239,14 @@ const useLegacyMode = !useArtDirection;
 // Procesar datos según el modo
 let processedData: any = {};
 
+// Determinar si la imagen es SVG (usado para evitar preloads/formatos inválidos)
+const isSvgImage = (() => {
+  const fromSrc = typeof src === 'string' && src.toLowerCase().endsWith('.svg');
+  const fromFallback = typeof fallback?.src === 'string' && fallback.src.toLowerCase().endsWith('.svg');
+  const fromSources = Array.isArray(sources) && sources.some((s) => typeof s.src === 'string' && s.src.toLowerCase().endsWith('.svg'));
+  return Boolean(fromSrc || fromFallback || fromSources);
+})();
+
 if (useArtDirection) {
   // Procesar art direction
   processedData = {
@@ -300,10 +308,17 @@ if (useArtDirection) {
 
   // Detectar imagen crítica
   const isCritical = isCriticalImage(src || '', sources);
-  const shouldPreload = preload ?? isCritical;
+  // Para SVG, evitar preload implícito (a menos que se fuerce con preload={true})
+  const shouldPreload = isSvgImage ? Boolean(preload) : (preload ?? isCritical);
   const preloadID = useArtDirection 
-    ? processedData.fallbackFormats?.avif?.replace(/\W+/g, '_') || 'art-direction'
-    : processedData.legacyAvif.replace(/\W+/g, '_');
+    ? (isSvgImage ? (processedData.fallbackFormats?.fallback?.replace(/\W+/g, '_') || 'art-direction') : processedData.fallbackFormats?.avif?.replace(/\W+/g, '_') || 'art-direction')
+    : (isSvgImage ? processedData.legacyFallback.replace(/\W+/g, '_') : processedData.legacyAvif.replace(/\W+/g, '_'));
+
+  // Href y tipo correctos para el preload
+  const preloadHref = useArtDirection
+    ? (isSvgImage ? processedData.fallbackFormats?.fallback : processedData.fallbackFormats?.avif)
+    : (isSvgImage ? processedData.legacyFallback : processedData.legacyAvif);
+  const preloadType = isSvgImage ? 'image/svg+xml' : 'image/avif';
 
   // Optimización adicional para LCP
   const isLCPElement = isCritical && (src?.includes('logo') || src?.includes('hero'));
@@ -327,8 +342,8 @@ if (import.meta.env.MODE === 'development') {
     id={`preload_${preloadID}`}
     rel="preload"
     as="image"
-    href={useArtDirection ? processedData.fallbackFormats.avif : processedData.legacyAvif}
-    type="image/avif"
+    href={preloadHref}
+    type={preloadType}
     fetchpriority={isLCPElement ? "high" : fetchPriority}
   />
 )}
@@ -374,8 +389,12 @@ if (import.meta.env.MODE === 'development') {
   ) : (
     <>
       {/* Modo legacy */}
-      <source srcset={processedData.legacyAvifSrcset} type="image/avif" sizes={processedData.imgSizes} />
-      <source srcset={processedData.legacyWebpSrcset} type="image/webp" sizes={processedData.imgSizes} />
+      {!isSvgImage && (
+        <>
+          <source srcset={processedData.legacyAvifSrcset} type="image/avif" sizes={processedData.imgSizes} />
+          <source srcset={processedData.legacyWebpSrcset} type="image/webp" sizes={processedData.imgSizes} />
+        </>
+      )}
       <img
         src={processedData.legacyFallback}
         alt={alt}

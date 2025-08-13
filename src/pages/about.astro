@@ -87,8 +87,8 @@ const seoConfig = {
 
         <!-- Logo con transición -->
         <div class="flex justify-center mb-12">
-          <a href="https://astro.build" class="inline-block">
-            <figure transition:name="astro-logo" transition:animate="fade" transition:persist class="inline-block">
+          <a href="/" class="inline-block">
+            <figure transition:name="astro-logo" transition:animate="persist" transition:persist class="inline-block">
               <OptimizedImage
                 src="/assets/img-op/astro.svg"
                 alt="Astro framework logo - Modern web framework for content-driven websites"
@@ -106,7 +106,7 @@ const seoConfig = {
         </div>
 
         <!-- Título con transición -->
-        <h1 
+         <h1 
           class="text-4xl md:text-6xl font-bold text-gray-800 mb-8 text-center"
           transition:name="welcome-title"
           transition:animate="fade"
@@ -142,7 +142,7 @@ const seoConfig = {
         <!-- Botón con transición -->
         <div class="flex justify-center mb-16">
           <a 
-            class="button px-8 py-3 text-lg font-medium" 
+            class="button px-8 py-3 text-lg font-medium bg-blue-500 hover:bg-red-600 text-white cursor-pointer transition-colors" 
             href="/"
             transition:name="docs-button"
             transition:animate="fade"

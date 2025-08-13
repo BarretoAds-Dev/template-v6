@@ -1,0 +1,57 @@
+---
+type NativeAnim = 'fade' | 'slide' | 'none' | 'scale' | 'persist';
+type WrapperAnim = NativeAnim | 'zoom' | 'rotate';
+
+interface Props {
+  name?: string;
+  animate?: WrapperAnim;
+  scope?: string; // para transition:scope
+  priority?: 'low' | 'medium' | 'high';
+  preloadNext?: boolean; // sugiera al manager hacer prefetch de enlaces internos
+  class?: string;
+}
+
+const { name = 'vt', animate = 'fade', scope, priority = 'medium', preloadNext = false, class: className = '' } = Astro.props as Props;
+const nativeAnim: NativeAnim = ((): NativeAnim => (animate === 'zoom' || animate === 'rotate') ? 'scale' : (animate as NativeAnim))();
+---
+
+<div class={className}
+  transition:name={name}
+  transition:animate={nativeAnim}
+  {...(scope ? { 'transition:scope': scope } : {})}
+  data-vt-animation={animate}
+  data-vt-priority={priority}
+  data-vt-preload={preloadNext}
+>
+  <slot />
+</div>
+
+<style is:inline>
+  @media (prefers-reduced-motion: reduce) {
+    [data-vt-animation] { transition: none !important; animation: none !important; }
+  }
+  /* animaciones básicas mapeadas al manager */
+  [data-vt-animation="fade"] { view-transition-name: fade; transition: opacity .35s ease; }
+  [data-vt-animation="slide"] { view-transition-name: slide; transition: transform .45s ease; }
+  [data-vt-animation="zoom"] { view-transition-name: zoom; transition: transform .35s ease; }
+  [data-vt-animation="rotate"] { view-transition-name: rotate; transition: transform .5s ease; }
+</style>
+
+<script type="module" is:inline>
+  // Si existe el manager global, reporta el elemento para métricas y prefetch (JS puro)
+  const current = document.currentScript;
+  const el = current ? current.previousElementSibling : null;
+  const mgr = window && window.viewTransitionsManager;
+  if (el && mgr && typeof mgr.reportElement === 'function') {
+    try {
+      mgr.reportElement({
+        transitionName: el.getAttribute('transition:name') || 'vt',
+        animationType: el.getAttribute('data-vt-animation') || 'fade',
+        priority: el.getAttribute('data-vt-priority') || 'medium',
+        preload: el.getAttribute('data-vt-preload') === 'true',
+        element: el,
+      });
+    } catch {}
+  }
+</script>
+

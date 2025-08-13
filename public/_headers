@@ -11,8 +11,8 @@
 
 # CSS y JS - Cache con validación
 /_astro/*
-  Cache-Control: public, max-age=31536000, must-revalidate
+  Cache-Control: public, max-age=31536000, immutable
 
 # Páginas - Cache corto para View Transitions
 /*
-  Cache-Control: public, max-age=300, must-revalidate 
+  Cache-Control: public, max-age=31536000, immutable

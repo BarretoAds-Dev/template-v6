@@ -1,5 +1,6 @@
 ---
 import OptimizedImage from '@/components/ui/OptimizedImage.astro';
+import VT from '@/components/ui/ViewTransitionsWrapper.astro';
 
 ---
 
@@ -8,10 +9,10 @@ import OptimizedImage from '@/components/ui/OptimizedImage.astro';
 
 
  
-    <div class="flex flex-col items-center justify-center">
+    <VT name="home-hero" animate="fade" priority="high" preloadNext class="flex flex-col items-center justify-center">
 
       <a href="https://astro.build" class="block">
-        <figure transition:name="astro-logo" transition:animate="fade" transition:duration="400" transition:persist>
+        <figure transition:name="astro-logo" transition:persist data-vt-animation="hero-fade">
           <OptimizedImage
             src="/assets/img-op/astro.svg"
             alt="Astro framework logo - Modern web framework for content-driven websites"
@@ -31,6 +32,8 @@ import OptimizedImage from '@/components/ui/OptimizedImage.astro';
         class="text-[22px] mt-1 text-gray-800 leading-relaxed md:leading-normal"
         transition:name="welcome-title"
         transition:animate="fade"
+        transition:duration="400"
+        data-vt-animation="slide-up"
       >
         To get started, open the 
   
@@ -38,6 +41,7 @@ import OptimizedImage from '@/components/ui/OptimizedImage.astro';
           class="inline-block bg-gradient-to-tr from-pink-100 to-purple-200 rounded-lg p-1.5 border border-transparent"
           transition:name="code-block"
           transition:animate="fade"
+          data-vt-animation="blur-transition"
         >
           <pre class="m-0 font-mono font-normal bg-gradient-to-r from-red-500 to-purple-500 bg-clip-text text-transparent">src/pages</pre>
         </code>
@@ -47,15 +51,18 @@ import OptimizedImage from '@/components/ui/OptimizedImage.astro';
    
  
         <a 
-          class="button px-4 py-2 rounded-md bg-gradient-to-r from-red-500 to-purple-500 text-white" 
+          class="button px-4 py-2 rounded-md bg-green-500 hover:bg-green-600 text-white cursor-pointer transition-colors" 
           href="/about/"
           transition:name="docs-button"
           transition:animate="fade"
+          data-vt-animation="scale-in"
+          data-vt-preload="true"
+          data-vt-priority="high"
         >
           About Template V6
         </a>
       </div>
-
+    </VT>
 
 
     </section>
