@@ -467,7 +467,7 @@ if (import.meta.env.MODE === 'development') {
     };
 
     // Ejecutar una vez y reusar en cada navegación sin duplicar listeners
-    document.addEventListener('astro:page-load', optimizeImages);
+    document.addEventListener('astro:page-load', optimizeImages, { once: true });
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', optimizeImages, { once: true });
     } else {

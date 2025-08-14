@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css';
 import OptimizedImage from '@/components/ui/OptimizedImage.astro';
-
+import { ClientRouter } from 'astro:transitions';
 
 import MetaHead from '@/layouts/MetaHead.astro';
 import type { LayoutProps } from '@/types/layout';
@@ -24,10 +24,12 @@ const props = Astro.props;
     ||                                                                        ||
     ============================================================================
   */ -->
-  <html lang="es" transition:animate="none">
+  <html lang="es">
     <MetaHead {...props} />
 
 <body>
+  <ClientRouter />
+
   <figure transition:persist class="size-full">
     <OptimizedImage
       src="/assets/img-op/background.svg"
@@ -42,11 +44,48 @@ const props = Astro.props;
     />  <figcaption class="sr-only">Astro Framework Background</figcaption> 
   
   </figure>
-  <main transition:scope="page" transition:animate="fade">
+  <main transition:scope="page" transition:animate="slide">
     <slot />
   </main>
 
+  <script is:inline>
+    // Registro SW (idempotente en dev)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try { await navigator.serviceWorker.register('/sw.js'); } catch {}
+      });
+      navigator.serviceWorker.addEventListener('message', (ev) => {
+        const msg = ev.data || {};
+        if (msg.type === 'SW_READY') showUpdateToast(msg.version);
+        if (msg.type === 'SW_CLEARED') location.reload();
+      });
+    }
 
+    function showUpdateToast(version) {
+      if (document.getElementById('sw-update-toast')) return;
+      const toast = document.createElement('div');
+      toast.id = 'sw-update-toast';
+      toast.style.cssText = 'position:fixed;inset:auto 12px 12px auto;z-index:9999;background:#0ea5e9;color:white;padding:10px 12px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.15);font:500 14px system-ui;display:flex;gap:8px;align-items:center';
+      toast.innerHTML = `<span>Actualización disponible</span><button id="sw-update-btn" style="appearance:none;border:0;background:#111827;color:#fff;padding:6px 10px;border-radius:8px;font-weight:700;cursor:pointer">Actualizar ahora</button>`;
+      document.body.appendChild(toast);
+      toast.querySelector('#sw-update-btn')?.addEventListener('click', onUpdateNow);
+    }
 
+    async function onUpdateNow() {
+      try {
+        // pedir al SW que haga skipWaiting y limpie caches
+        navigator.serviceWorker.controller?.postMessage({ type: 'SW_SKIP_WAITING' });
+        navigator.serviceWorker.controller?.postMessage({ type: 'SW_HARD_CLEAR' });
+        // Unregister desde la página como respaldo
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map((r) => r.unregister()));
+        if (window.caches) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((k) => caches.delete(k)));
+        }
+      } catch {}
+      location.reload();
+    }
+  </script>
 </body>
 </html>

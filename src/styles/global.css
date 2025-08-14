@@ -41,3 +41,84 @@
 [transition\:persist] {
   contain: paint;
 }
+
+/* -------------------------------------------
+   4. View Transitions avanzadas
+   - Definiciones para nombres: fade, slide, zoom, rotate
+   - Manejo global de timings y easing
+   - Accesibilidad: reduce motion
+------------------------------------------- */
+
+/* Timing y easing por defecto */
+html { view-transition-name: root; }
+body { view-transition-name: body; }
+main { view-transition-name: page; }
+
+::view-transition-group(*) {
+  animation-duration: 180ms;
+  animation-timing-function: cubic-bezier(.2,.0,.2,1);
+}
+
+/* Fade */
+@keyframes vt-fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes vt-fade-out { from { opacity: 1 } to { opacity: 0 } }
+::view-transition-new(fade), ::view-transition-new(page), ::view-transition-new(body) { animation-name: vt-fade-in }
+::view-transition-old(fade), ::view-transition-old(page), ::view-transition-old(body) { animation-name: vt-fade-out }
+
+/* Slide (up-in / down-out) */
+@keyframes vt-slide-in { from { transform: translateX(16px); opacity: .001 } to { transform: translateX(0); opacity: 1 } }
+@keyframes vt-slide-out { from { transform: translateX(0); opacity: 1 } to { transform: translateX(-16px); opacity: .001 } }
+::view-transition-new(slide) { animation-name: vt-slide-in }
+::view-transition-old(slide) { animation-name: vt-slide-out }
+
+/* Ritmo específico del contenedor de página */
+::view-transition-group(page) {
+  animation-duration: 160ms;
+  animation-timing-function: cubic-bezier(.3, 0, .2, 1);
+}
+
+/* Fade-Left (desvanecimiento hacia la izquierda) */
+@keyframes vt-fade-left-in { from { transform: translateX(8px); opacity: .001 } to { transform: translateX(0); opacity: 1 } }
+@keyframes vt-fade-left-out { from { transform: translateX(0); opacity: 1 } to { transform: translateX(-8px); opacity: .001 } }
+::view-transition-new(fade-left) { animation-name: vt-fade-left-in }
+::view-transition-old(fade-left) { animation-name: vt-fade-left-out }
+
+/* Zoom */
+@keyframes vt-zoom-in { from { transform: scale(.985); opacity: .001 } to { transform: scale(1); opacity: 1 } }
+@keyframes vt-zoom-out { from { transform: scale(1); opacity: 1 } to { transform: scale(1.015); opacity: .001 } }
+::view-transition-new(zoom) { animation-name: vt-zoom-in }
+::view-transition-old(zoom) { animation-name: vt-zoom-out }
+
+/* Rotate (sutil) */
+@keyframes vt-rotate-in { from { transform: rotate(-.75deg) scale(.995); opacity: .001 } to { transform: rotate(0) scale(1); opacity: 1 } }
+@keyframes vt-rotate-out { from { transform: rotate(0) scale(1); opacity: 1 } to { transform: rotate(.75deg) scale(1.005); opacity: .001 } }
+::view-transition-new(rotate) { animation-name: vt-rotate-in }
+::view-transition-old(rotate) { animation-name: vt-rotate-out }
+
+/* -------------------------------------------
+   5. Transición especial del logo (astro-logo)
+   - Desplazamiento marcado, leve giro y zoom
+   - Solo transforma/opacity para máximo rendimiento
+------------------------------------------- */
+::view-transition-group(astro-logo) {
+  animation-duration: 240ms;
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes logo-in {
+  from { transform: translateX(96px) translateY(-8px) scale(.96) rotate(-4deg); opacity: .001 }
+  to   { transform: translateX(0) translateY(0) scale(1) rotate(0);       opacity: 1 }
+}
+@keyframes logo-out {
+  from { transform: translateX(0) translateY(0) scale(1) rotate(0);       opacity: 1 }
+  to   { transform: translateX(-96px) translateY(8px) scale(1.04) rotate(4deg); opacity: .001 }
+}
+::view-transition-new(astro-logo) { animation-name: logo-in }
+::view-transition-old(astro-logo) { animation-name: logo-out }
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) { animation: none !important }
+  ::view-transition-new(*) { animation: none !important }
+  ::view-transition-old(*) { animation: none !important }
+}

@@ -494,7 +494,7 @@ export const ULTRA_SEO_CONFIG = {
 
 export const ADVANCED_IMAGE_ASSETS = {
   logo: {
-    url: 'src/assets/astro.svg',
+    url: '/assets/img-op/astro.svg',
     alt: `${BUSINESS_INFO.name} Logo`,
     width: 300,
     height: 300,
@@ -503,7 +503,7 @@ export const ADVANCED_IMAGE_ASSETS = {
   },
 
   openGraph: {
-    url: '/assets/background.svg',
+    url: '/assets/img-op/background.svg',
     alt: `${BUSINESS_INFO.name} - Professional Services`,
     width: 1200,
     height: 630,
@@ -517,7 +517,7 @@ export const ADVANCED_IMAGE_ASSETS = {
   },
 
   hero: {
-    url: 'src/assets/astro.svg',
+    url: '/assets/img-op/astro.svg',
     alt: 'Professional services hero image',
     width: 1920,
     height: 1080,

@@ -12,7 +12,7 @@ import VT from '@/components/ui/ViewTransitionsWrapper.astro';
     <VT name="home-hero" animate="fade" priority="high" preloadNext class="flex flex-col items-center justify-center">
 
       <a href="https://astro.build" class="block">
-        <figure transition:name="astro-logo" transition:persist data-vt-animation="hero-fade">
+        <figure transition:name="astro-logo" transition:persist>
           <OptimizedImage
             src="/assets/img-op/astro.svg"
             alt="Astro framework logo - Modern web framework for content-driven websites"
@@ -32,7 +32,7 @@ import VT from '@/components/ui/ViewTransitionsWrapper.astro';
         class="text-[22px] mt-1 text-gray-800 leading-relaxed md:leading-normal"
         transition:name="welcome-title"
         transition:animate="fade"
-        transition:duration="400"
+        transition:duration="140"
         data-vt-animation="slide-up"
       >
         To get started, open the 
@@ -61,7 +61,6 @@ import VT from '@/components/ui/ViewTransitionsWrapper.astro';
         >
           About Template V6
         </a>
-      </div>
     </VT>
 
 

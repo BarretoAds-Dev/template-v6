@@ -11,6 +11,9 @@ export default defineConfig({
     enabled: false
   },
   outDir: './dist',
+  experimental: {
+    clientPrerender: true
+  },
   adapter: cloudflare({
     platformProxy: {
       enabled: true

@@ -5,7 +5,7 @@
 // Componente HEAD ultra avanzado con optimizaciones híper-avanzadas para:
 // SEO, AEO, GSO, Intent, Search Intent, IA, IA Suggestions, AIO, E-E-A-T
 // ============================================================================
-import { ClientRouter } from "astro:transitions";
+import { ClientRouter } from 'astro:transitions';
 
 import {
   MASTER_SEO_CONFIG,
@@ -167,11 +167,11 @@ const ultraAdvancedSchemas = generateCompleteSchemaMarkup(pageType as any, {
 });
 
 // 16. META TAGS OPTIMIZADOS
-const optimizedMetaTags = generateOptimizedMetaTags({
+  const optimizedMetaTags = generateOptimizedMetaTags({
   title: pageTitle,
   description: pageDescription,
   keywords: ultraAdvancedKeywords.split(', '),
-  image: props.image || '/assets/img-op/rays.avif',
+    image: props.image || '/assets/img-op/background.svg',
   type: pageType === 'article' ? 'article' : 'website',
   author: articleData?.author || business.founder?.name || business.name,
   publishedTime: articleData?.publishedDate,
@@ -191,7 +191,7 @@ const seoConfig: any = {
     description: optimizedMetaTags['og:description'],
     type: optimizedMetaTags['og:type'],
     url: canonicalUrl,
-    image: generateAbsoluteURL(props.image || '/assets/img-op/rays.avif'),
+    image: generateAbsoluteURL(props.image || '/assets/img-op/background.svg'),
     siteName: optimizedMetaTags['og:site_name'],
     locale: optimizedMetaTags['og:locale']
   },
@@ -238,6 +238,7 @@ const debugInfo = {
 ---
 
 <head>
+
   {/* 🚀🚀🚀 Preloads Content Optimizations Start 🚀🚀🚀 */}
 {/* 🎨 CSS CRÍTICO INLINE - MÁXIMA PRIORIDAD */}
 <style is:inline id="critical-css">
@@ -278,7 +279,7 @@ const debugInfo = {
   }
 </style>
 {/* 🚀 Preloads Content Optimizations End 🚀 */}
-  
+<ClientRouter />
   
 
 
@@ -458,8 +459,9 @@ const debugInfo = {
     Specializing in ${business.founder.expertise[0]}.
     Available for consultation and project quotes.
   `} />
- <ClientRouter />
  
+
+
 
   {/* ============================================================================
        ✅ META HEAD ULTRA AVANZADO - CONFIGURACIÓN COMPLETADA
